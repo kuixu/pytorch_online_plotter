@@ -38,6 +38,7 @@ if args.cuda:
 # online ploter
 os.system("python -m visdom.server -port "+str(args.port)+" &")
 mlog = MeterLogger(port=args.port, nclass=10,title="mnist_ConvNet")
+#===============
 
 kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
 train_loader = torch.utils.data.DataLoader(
@@ -84,6 +85,7 @@ def train(epoch):
     for batch_idx, (data, target) in enumerate(train_loader):
 	# online ploter
 	mlog.meter['time'].reset()
+	#===============
         if args.cuda:
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data), Variable(target)
@@ -94,11 +96,15 @@ def train(epoch):
         optimizer.step()
 	# online ploter
 	mlog.updateMeter(output, target, loss)
+ 	#===============
         if batch_idx % args.log_interval == 0:
 	    # online ploter
 	    mlog.printMeter("Train", epoch, batch_idx, len(train_loader))  
+	    #===============
+	    
     # online ploter
     mlog.resetMeter(epoch, mode='Train')
+    #===============
 
 def test():
     model.eval()
