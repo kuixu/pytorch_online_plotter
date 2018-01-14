@@ -100,6 +100,7 @@ def train(epoch):
         if batch_idx % args.log_interval == 0:
 	    # online ploter
 	    mlog.printMeter("Train", epoch, batch_idx, len(train_loader))  
+	    
     # online ploter
     mlog.resetMeter(epoch, mode='Train')
 
@@ -124,7 +125,6 @@ def test():
 
     # online ploter
     mlog.resetMeter(epoch, mode='Test')
-
 
 for epoch in range(1, args.epochs + 1):
     train(epoch)
