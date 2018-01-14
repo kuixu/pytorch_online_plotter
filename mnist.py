@@ -26,6 +26,8 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='how many batches to wait before logging training status')
+parser.add_argument('--server', type=str, default="localhost", metavar='N',
+                    help='server name that visdom service on (default: localhost)')
 parser.add_argument('--port', type=int, default=9999, metavar='N',
                     help='port that visdom service on (default: 9999)')
 args = parser.parse_args()
@@ -36,8 +38,8 @@ if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
 # online ploter
-os.system("python -m visdom.server -port "+str(args.port)+" &")
-mlog = MeterLogger(port=args.port, nclass=10,title="mnist_ConvNet")
+#os.system("python -m visdom.server -port "+str(args.port)+" &")
+mlog = MeterLogger(server=args.server, port=args.port, nclass=10,title="mnist_ConvNet")
 
 kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
 train_loader = torch.utils.data.DataLoader(
@@ -83,7 +85,7 @@ def train(epoch):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
 	# online ploter
-	mlog.meter['time'].reset()
+	mlog.timer.reset()
         if args.cuda:
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data), Variable(target)
@@ -93,7 +95,8 @@ def train(epoch):
         loss.backward()
         optimizer.step()
 	# online ploter
-	mlog.updateMeter(output, target, loss)
+	mlog.updateLoss(loss, meter='loss')
+	mlog.updateMeterList(output, target, meters={'accuracy', 'map'})
         if batch_idx % args.log_interval == 0:
 	    # online ploter
 	    mlog.printMeter("Train", epoch, batch_idx, len(train_loader))  
@@ -106,14 +109,15 @@ def test():
     correct = 0
     for batch_idx, (data, target) in enumerate(test_loader):
 	# online ploter
-	mlog.meter['time'].reset()
+	mlog.timer.reset()
         if args.cuda:
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data, volatile=True), Variable(target)
         output = model(data)
         test_loss += F.nll_loss(output, target) 
 	# online ploter
-	mlog.updateMeter(output, target, test_loss)
+	mlog.updateLoss(test_loss, meter='loss')
+	mlog.updateMeterList(output, target, meters={'accuracy', 'map'})
         if batch_idx % args.log_interval == 0:
 	    # online ploter
 	    mlog.printMeter("Test", epoch, batch_idx, len(test_loader))  
