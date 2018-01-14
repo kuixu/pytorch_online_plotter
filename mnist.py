@@ -56,7 +56,6 @@ test_loader = torch.utils.data.DataLoader(
                    ])),
     batch_size=args.test_batch_size, shuffle=True, **kwargs)
 
-
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -96,7 +95,7 @@ def train(epoch):
         optimizer.step()
 	# online ploter
 	mlog.updateLoss(loss, meter='loss')
-	mlog.updateMeterList(output, target, meters={'accuracy', 'map'})
+	mlog.updateMeter(output, target, meters={'accuracy', 'map'})
         if batch_idx % args.log_interval == 0:
 	    # online ploter
 	    mlog.printMeter("Train", epoch, batch_idx, len(train_loader))  
@@ -118,7 +117,7 @@ def test():
         test_loss += F.nll_loss(output, target) 
 	# online ploter
 	mlog.updateLoss(test_loss, meter='loss')
-	mlog.updateMeterList(output, target, meters={'accuracy', 'map'})
+	mlog.updateMeter(output, target, meters={'accuracy', 'map'})
         if batch_idx % args.log_interval == 0:
 	    # online ploter
 	    mlog.printMeter("Test", epoch, batch_idx, len(test_loader))  
