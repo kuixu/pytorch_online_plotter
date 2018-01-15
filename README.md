@@ -6,8 +6,8 @@ Online meter ploter for pytorch. Real time ploting Accuracy, Loss, mAP, AUC, Con
 
 ```bash
 pip install -r requirements.txt
-python main.py
-# CUDA_VISIBLE_DEVICES=2 python main.py  # to specify GPU id to ex. 2
+python mnist.py
+# CUDA_VISIBLE_DEVICES=1 python mnist.py  # to specify GPU id to ex. 1
 ```
 
 
