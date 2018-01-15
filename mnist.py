@@ -95,6 +95,7 @@ def train(epoch):
         optimizer.step()
 	# online ploter
 	mlog.updateLoss(loss, meter='loss')
+	#mlog.updateLoss(l1_loss, meter='l1_loss')
 	mlog.updateMeter(output, target, meters={'accuracy', 'map'})
         if batch_idx % args.log_interval == 0:
 	    # online ploter
