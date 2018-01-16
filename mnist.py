@@ -28,8 +28,8 @@ parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--server', type=str, default="localhost", metavar='N',
                     help='server name that visdom service on (default: localhost)')
-parser.add_argument('--port', type=int, default=9999, metavar='N',
-                    help='port that visdom service on (default: 9999)')
+parser.add_argument('--port', type=int, default=8097, metavar='N',
+                    help='port that visdom service on (default: 8097)')
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 
