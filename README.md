@@ -14,6 +14,9 @@ python -m visdom.server
 pip install -r requirements.txt
 python mnist.py
 # CUDA_VISIBLE_DEVICES=1 python mnist.py  # to specify GPU id to ex. 1
+
+# if you run Visdom with 9999
+# python mnist.py --port 9999
 ```
 
 ## Multi-meter
