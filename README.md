@@ -26,7 +26,7 @@ Easy to plot multi-meter with just one-line code:
 ### Plotting Accuracy, mAP
 
 ```python
-mlog.updateMeter(output, target, meters={'accuracy', 'map'})
+mlog.update_meter(output, target, meters={'accuracy', 'map'})
 ```
 
 ### Plotting Loss Curve
@@ -34,11 +34,11 @@ mlog.updateMeter(output, target, meters={'accuracy', 'map'})
 ```python
 # NLL Loss
 nll_loss = F.nll_loss(output, target)
-mlog.updateLoss(nll_loss, meter='nll_loss')
+mlog.update_loss(nll_loss, meter='nll_loss')
 
 # Cross Entropy Loss
 ce_loss = F.cross_entropy(output, target)
-mlog.updateLoss(ce_loss, meter='ce_loss')
+mlog.update_loss(ce_loss, meter='ce_loss')
 ```
 
 ## Remote Plotting
