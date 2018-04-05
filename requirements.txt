@@ -1,3 +1,3 @@
 torch
 torchvision
-torchnet
+git+https://github.com/pytorch/tnt.git@master
