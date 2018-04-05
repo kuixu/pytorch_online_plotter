@@ -94,15 +94,15 @@ def train(epoch):
         loss.backward()
         optimizer.step()
 	# online ploter
-	mlog.updateLoss(loss, meter='loss')
+	mlog.update_loss(loss, meter='loss')
 	#mlog.updateLoss(l1_loss, meter='l1_loss')
-	mlog.updateMeter(output, target, meters={'accuracy', 'map'})
+	mlog.update_meter(output, target, meters={'accuracy', 'map'})
         if batch_idx % args.log_interval == 0:
 	    # online ploter
-	    mlog.printMeter("Train", epoch, batch_idx, len(train_loader))  
+	    mlog.print_meter("Train", epoch, batch_idx, len(train_loader))  
 	    
     # online ploter
-    mlog.resetMeter(epoch, mode='Train')
+    mlog.reset_meter(epoch, mode='Train')
 
 def test():
     model.eval()
@@ -117,14 +117,14 @@ def test():
         output = model(data)
         test_loss += F.nll_loss(output, target) 
 	# online ploter
-	mlog.updateLoss(test_loss, meter='loss')
-	mlog.updateMeter(output, target, meters={'accuracy', 'map'})
+	mlog.update_loss(test_loss, meter='loss')
+	mlog.update_meter(output, target, meters={'accuracy', 'map'})
         if batch_idx % args.log_interval == 0:
 	    # online ploter
-	    mlog.printMeter("Test", epoch, batch_idx, len(test_loader))  
+	    mlog.print_meter("Test", epoch, batch_idx, len(test_loader))  
 
     # online ploter
-    mlog.resetMeter(epoch, mode='Test')
+    mlog.reset_meter(epoch, mode='Test')
 
 for epoch in range(1, args.epochs + 1):
     train(epoch)
